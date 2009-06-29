@@ -353,10 +353,9 @@ config EEEPC_LAPTOP
 	tristate "Eee PC Hotkey Driver (EXPERIMENTAL)"
 	depends on ACPI
 	depends on INPUT
+	depends on HOTPLUG_PCI
 	depends on BACKLIGHT_CLASS_DEVICE
 	depends on HWMON
-	select HOTPLUG
-	select HOTPLUG_PCI if PCI
 	depends on EXPERIMENTAL
 	depends on RFKILL || RFKILL = n
 	---help---
