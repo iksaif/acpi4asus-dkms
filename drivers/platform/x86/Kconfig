@@ -332,6 +332,8 @@ config EEEPC_LAPTOP
 	depends on HOTPLUG_PCI
 	depends on BACKLIGHT_CLASS_DEVICE
 	depends on HWMON
+	select LEDS_CLASS
+	select NEW_LEDS
 	depends on EXPERIMENTAL
 	depends on RFKILL || RFKILL = n
 	---help---
