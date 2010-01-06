@@ -362,6 +362,7 @@ config EEEPC_LAPTOP
 	depends on HWMON
 	select LEDS_CLASS
 	select NEW_LEDS
+	select INPUT_SPARSEKMAP
 	depends on EXPERIMENTAL
 	depends on RFKILL || RFKILL = n
 	---help---
