@@ -1480,7 +1480,7 @@ static struct attribute *asus_attributes[] = {
 	NULL
 };
 
-static mode_t asus_sysfs_is_visible(struct kobject *kobj,
+static umode_t asus_sysfs_is_visible(struct kobject *kobj,
 				    struct attribute *attr,
 				    int idx)
 {
