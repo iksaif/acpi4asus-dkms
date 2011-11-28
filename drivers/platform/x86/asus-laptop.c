@@ -37,6 +37,7 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/kernel.h>
+#include <linux/version.h>
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/types.h>
@@ -757,7 +758,9 @@ static int asus_backlight_init(struct asus_laptop *asus)
 
 	memset(&props, 0, sizeof(struct backlight_properties));
 	props.max_brightness = 15;
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
 	props.type = BACKLIGHT_PLATFORM;
+#endif
 
 	bd = backlight_device_register(ASUS_LAPTOP_FILE,
 				       &asus->platform_device->dev, asus,

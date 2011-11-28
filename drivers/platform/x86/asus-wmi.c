@@ -27,6 +27,7 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/kernel.h>
+#include <linux/version.h>
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/types.h>
@@ -1184,7 +1185,9 @@ static int asus_wmi_backlight_init(struct asus_wmi *asus)
 		return power;
 
 	memset(&props, 0, sizeof(struct backlight_properties));
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
 	props.type = BACKLIGHT_PLATFORM;
+#endif
 	props.max_brightness = max;
 	bd = backlight_device_register(asus->driver->name,
 				       &asus->platform_device->dev, asus,

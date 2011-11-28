@@ -68,9 +68,16 @@ static const struct key_entry eeepc_wmi_keymap[] = {
 	{ KE_KEY, 0x32, { KEY_MUTE } },
 	{ KE_KEY, 0x5c, { KEY_F15 } }, /* Power Gear key */
 	{ KE_KEY, 0x5d, { KEY_WLAN } },
-	{ KE_KEY, 0x6b, { KEY_TOUCHPAD_TOGGLE } }, /* Toggle Touchpad */
+#ifdef KEY_TOUCHPAD_TOGGLE
+	{ KE_KEY, 0x6b, { KEY_TOUCHPAD_TOGGLE } }, /* Disable Touchpad */
+#else
+	{ KE_KEY, 0x6b, { KEY_F13 } }, /* Disable Touchpad */
+#endif
+
 	{ KE_KEY, 0x82, { KEY_CAMERA } },
+#ifdef KEY_CAMERA_ZOOMIN
 	{ KE_KEY, 0x83, { KEY_CAMERA_ZOOMIN } },
+#endif
 	{ KE_KEY, 0x88, { KEY_WLAN } },
 	{ KE_KEY, 0xbd, { KEY_CAMERA } },
 	{ KE_KEY, 0xcc, { KEY_SWITCHVIDEOMODE } },
@@ -79,11 +86,21 @@ static const struct key_entry eeepc_wmi_keymap[] = {
 	{ KE_KEY, HOME_PRESS, { KEY_CONFIG } }, /* Home/Express gate key */
 	{ KE_KEY, 0xe8, { KEY_SCREENLOCK } },
 	{ KE_KEY, 0xe9, { KEY_BRIGHTNESS_ZERO } },
+#ifdef KEY_CAMERA_ZOOMOUT
 	{ KE_KEY, 0xeb, { KEY_CAMERA_ZOOMOUT } },
+#endif
+#ifdef KEY_CAMERA_UP
 	{ KE_KEY, 0xec, { KEY_CAMERA_UP } },
+#endif
+#ifdef KEY_CAMERA_DOWN
 	{ KE_KEY, 0xed, { KEY_CAMERA_DOWN } },
+#endif
+#ifdef KEY_CAMERA_LEFT
 	{ KE_KEY, 0xee, { KEY_CAMERA_LEFT } },
+#endif
+#ifdef KEY_CAMERA_RIGHT
 	{ KE_KEY, 0xef, { KEY_CAMERA_RIGHT } },
+#endif
 	{ KE_END, 0},
 };
 
