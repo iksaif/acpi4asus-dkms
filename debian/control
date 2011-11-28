@@ -1,0 +1,16 @@
+Source: acpi4asus
+Section: kernel
+Priority: optional
+Maintainer: Corentin Chary <corentin.chary@gmail.com>
+Build-Depends: debhelper (>= 7.0.50~), dkms (>=1.95)
+Standards-Version: 3.9.1
+
+Package: acpi4asus-dkms
+Architecture: all
+Depends: dkms (>= 1.95), linux-headers-generic (>= 2.6) | linux-headers, findutils (>= 4), ${misc:Depends}
+Description: Asus ACPI and WMI drivers in DKMS format.
+ This package contains all acpi4asus's drivers.
+ eeepc-wmi: For new EeePCs.
+ eeepc-laptop: For old EeePCs (70x and 90x).
+ asus-laptop: For the vast majority of Asus Notebooks.
+ asus-nb-wmi: For new Asus Notebooks.
