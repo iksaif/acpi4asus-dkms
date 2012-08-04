@@ -650,7 +650,11 @@ static void asus_rfkill_hotplug(struct asus_wmi *asus)
 		} else {
 			dev = pci_get_slot(bus, 0);
 			if (dev) {
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,5,0))
+				pci_remove_bus_device(dev);
+#else
 				pci_stop_and_remove_bus_device(dev);
+#endif
 				pci_dev_put(dev);
 			}
 		}
@@ -887,8 +891,10 @@ static int asus_new_rfkill(struct asus_wmi *asus,
 	if (!*rfkill)
 		return -EINVAL;
 
+#if 0
 	if (dev_id == ASUS_WMI_DEVID_WLAN)
 		rfkill_set_led_trigger_name(*rfkill, "asus-wlan");
+#endif
 
 	rfkill_init_sw_state(*rfkill, !result);
 	result = rfkill_register(*rfkill);
@@ -1778,9 +1784,13 @@ static int asus_wmi_add(struct platform_device *pdev)
 	if (err)
 		goto fail_rfkill;
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
 	if (asus->driver->quirks->wmi_backlight_power)
 		acpi_video_dmi_promote_vendor();
 	if (!acpi_video_backlight_support()) {
+#else
+	if (asus->driver->quirks->wmi_backlight_power) {
+#endif
 		pr_info("Disabling ACPI video driver\n");
 		acpi_video_unregister();
 		err = asus_wmi_backlight_init(asus);

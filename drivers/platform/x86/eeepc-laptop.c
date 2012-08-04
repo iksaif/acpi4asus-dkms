@@ -647,7 +647,11 @@ static void eeepc_rfkill_hotplug(struct eeepc_laptop *eeepc, acpi_handle handle)
 		} else {
 			dev = pci_get_slot(bus, 0);
 			if (dev) {
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,5,0))
+				pci_remove_bus_device(dev);
+#else
 				pci_stop_and_remove_bus_device(dev);
+#endif
 				pci_dev_put(dev);
 			}
 		}
