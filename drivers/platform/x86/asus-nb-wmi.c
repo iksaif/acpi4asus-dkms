@@ -189,6 +189,7 @@ static const struct key_entry asus_nb_wmi_keymap[] = {
 #else
 	{ KE_KEY, 0x6B, { KEY_F21 } },
 #endif
+	{ KE_IGNORE, 0x6E, },  /* Low Battery notification */
 	{ KE_KEY, 0x7D, { KEY_BLUETOOTH } },
 	{ KE_KEY, 0x7E, { KEY_BLUETOOTH } },
 	{ KE_KEY, 0x82, { KEY_CAMERA } },
