@@ -1383,16 +1383,20 @@ static void asus_wmi_notify(u32 value, void *context)
 	}
 
 	if (code >= NOTIFY_BRNUP_MIN && code <= NOTIFY_BRNUP_MAX)
-		code = NOTIFY_BRNUP_MIN;
+		code = ASUS_WMI_BRN_UP;
 	else if (code >= NOTIFY_BRNDOWN_MIN &&
 		 code <= NOTIFY_BRNDOWN_MAX)
-		code = NOTIFY_BRNDOWN_MIN;
+		code = ASUS_WMI_BRN_DOWN;
 
-	if (code == NOTIFY_BRNUP_MIN || code == NOTIFY_BRNDOWN_MIN) {
-		if (!acpi_video_backlight_support())
+	if (code == ASUS_WMI_BRN_DOWN || code == ASUS_WMI_BRN_UP) {
+		if (!acpi_video_backlight_support()) {
 			asus_wmi_backlight_notify(asus, orig_code);
-	} else if (!sparse_keymap_report_event(asus->inputdev, code,
-					       key_value, autorelease))
+			goto exit;
+		}
+	}
+
+	if (!sparse_keymap_report_event(asus->inputdev, code,
+					key_value, autorelease))
 		pr_info("Unknown key %x pressed\n", code);
 
 exit:
