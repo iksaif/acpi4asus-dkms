@@ -63,6 +63,11 @@ static struct quirk_entry quirk_asus_x401u = {
 	.wapf = 4,
 };
 
+/* backlight control is handled by another module, such as nvidiabl */
+static struct quirk_entry quirk_asus_other_backlight = {
+	.other_backlight_power = true
+};
+
 static int dmi_matched(const struct dmi_system_id *dmi)
 {
 	quirks = dmi->driver_data;
@@ -141,6 +146,15 @@ static struct dmi_system_id asus_quirks[] = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "X55VD"),
 		},
 		.driver_data = &quirk_asus_x401u,
+	},
+	{
+		.callback = dmi_matched,
+		.ident = "ASUSTeK COMPUTER INC. G75VW",
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+			DMI_MATCH(DMI_PRODUCT_NAME, "G75VW"),
+		},
+		.driver_data = &quirk_asus_other_backlight
 	},
 	{},
 };
