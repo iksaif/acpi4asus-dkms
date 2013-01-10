@@ -1389,7 +1389,7 @@ static void asus_wmi_notify(u32 value, void *context)
 		code = ASUS_WMI_BRN_DOWN;
 
 	if (code == ASUS_WMI_BRN_DOWN || code == ASUS_WMI_BRN_UP) {
-		if (!acpi_video_backlight_support()) {
+		if (asus->backlight_device != NULL) {
 			asus_wmi_backlight_notify(asus, orig_code);
 			goto exit;
 		}
@@ -1752,6 +1752,7 @@ static int asus_wmi_add(struct platform_device *pdev)
 	struct platform_driver *pdrv = to_platform_driver(pdev->dev.driver);
 	struct asus_wmi_driver *wdrv = to_asus_wmi_driver(pdrv);
 	struct asus_wmi *asus;
+	struct quirk_entry *quirks;
 	acpi_status status;
 	int err;
 	u32 result;
@@ -1767,6 +1768,7 @@ static int asus_wmi_add(struct platform_device *pdev)
 
 	if (wdrv->detect_quirks)
 		wdrv->detect_quirks(asus->driver);
+	quirks = asus->driver->quirks;
 
 	err = asus_wmi_platform_init(asus);
 	if (err)
@@ -1789,17 +1791,22 @@ static int asus_wmi_add(struct platform_device *pdev)
 		goto fail_rfkill;
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
-	if (asus->driver->quirks->wmi_backlight_power)
+	if (quirks->wmi_backlight_power || quirks->other_backlight_power)
 		acpi_video_dmi_promote_vendor();
 	if (!acpi_video_backlight_support()) {
 #else
-	if (asus->driver->quirks->wmi_backlight_power) {
+	if (quirks->wmi_backlight_power || quirks->other_backlight_power) {
 #endif
 		pr_info("Disabling ACPI video driver\n");
 		acpi_video_unregister();
-		err = asus_wmi_backlight_init(asus);
-		if (err && err != -ENODEV)
-			goto fail_backlight;
+
+		if (!quirks->other_backlight_power)
+		{
+			err = asus_wmi_backlight_init(asus);
+			if (err && err != -ENODEV)
+				goto fail_backlight;
+			pr_info("Enabled WMI backlight driver\n");
+		}
 	} else
 		pr_info("Backlight controlled by ACPI video driver\n");
 
